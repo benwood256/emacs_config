@@ -1,0 +1,3 @@
+;;; -*- lisp-data -*-
+(("/home/john-doe/.emacs.d/")
+ ("/home/john-doe/.emacs.d/elpa/doom-dashboard/"))
