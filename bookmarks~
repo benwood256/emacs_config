@@ -2,40 +2,40 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("software engineering notes"
- (filename . "~/02_org_notes/software_engineering.org")
- (front-context-string . "#+TITLE: Softwar")
- (rear-context-string)
- (position . 1)
- (last-modified 27234 10107 268732 326000))
-("web development notes"
- (filename . "~/02_org_notes/web_development.org")
- (front-context-string . "#+TITLE: Web Dev")
- (rear-context-string)
- (position . 1)
- (last-modified 27234 10098 72552 928000))
-("general computing notes"
- (filename . "~/02_org_notes/general_computing.org")
- (front-context-string . "#+TITLE: General")
- (rear-context-string)
- (position . 1)
- (last-modified 27234 10082 841712 127000))
-("linux notes"
- (filename . "~/02_org_notes/linux.org")
- (front-context-string . "#+TITLE: Linux N")
- (rear-context-string)
- (position . 1)
- (last-modified 27234 10062 126411 138000))
-("emacs notes"
+(("Emacs"
  (filename . "~/02_org_notes/emacs.org")
  (front-context-string . "#+TITLE: Emacs N")
  (rear-context-string)
  (position . 1)
- (last-modified 27234 9966 941081 235000))
-("config file"
+ (last-modified 27234 10741 215760 73000))
+("Linux"
+ (filename . "~/02_org_notes/linux.org")
+ (front-context-string . "#+TITLE: Linux N")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27234 10733 572952 800000))
+("General Computing"
+ (filename . "~/02_org_notes/general_computing.org")
+ (front-context-string . "#+TITLE: General")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27234 10698 574663 277000))
+("Web Development"
+ (filename . "~/02_org_notes/web_development.org")
+ (front-context-string . "#+TITLE: Web Dev")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27234 10686 389869 137000))
+("Software Engineering"
+ (filename . "~/02_org_notes/software_engineering.org")
+ (front-context-string . "#+TITLE: Softwar")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27234 10669 187072 76000))
+("Config File"
  (filename . "~/.emacs.d/config.org")
  (front-context-string . " Code blocks\n\nTh")
  (rear-context-string)
- (position . 2)
- (last-modified 27234 9874 65056 497000))
+ (position . 1)
+ (last-modified 27234 10651 685008 363000))
 )
