@@ -1,34 +1,74 @@
 
 
-(load-theme 'dracula t)                             ;; theme type
-
-
-(set-face-attribute 'font-lock-comment-face nil     ;; comments were too feint, changed colour
-                  :foreground "#56B6C2"  
-                  :slant 'italic)
-
-(set-frame-font "JetBrainsMono Nerd Font-14" nil t) ;; font type & size
-
-(set-face-attribute 'org-level-1 nil
-		    :height 1.25)
-
 ;; searching for packages also includes 'melpa' -> default is only gnu & nongnu
 (setq package-archives
 	    '(("gnu"    . "https://elpa.gnu.org/packages/")
 	    ("nongnu" . "https://elpa.nongnu.org/nongnu/")
 	    ("melpa"  . "https://melpa.org/packages/")))
 
-(require 'evil)                                   ;; Evil package
-(evil-mode 1)
+(use-package evil
+  :ensure t
+  :custom
+  (evil-undo-system 'undo-redo)                   ;; force evil redo to work
+  :config
+  (evil-mode 1))
 
 (require 'consult)                                ;; Consult package
-(global-set-key (kbd "M-y") 'consult-yank-pop)    ;; Binds the key M-y to the function consult-yank-pop
+(global-set-key (kbd "M-y") 'consult-yank-pop)    ;; Search entire killring
 (global-set-key (kbd "C-x b") #'consult-buffer)   ;; switch buffers/files with consult
+(global-set-key (kbd "C-c g") #'consult-ripgrep)  ;; search your project with grep
+(global-set-key (kbd "C-x d") #'consult-dir)      ;; dired directory search
 
 (require 'vertico)                                ;; Vertico package
 (vertico-mode 1)
 
+(require 'corfu)                                  ;; autocomplete package
+(setq corfu-auto t)                               ;; show completion popup automatically as I type
+(setq corfu-auto-delay 0)                         ;; time corfu waits before showing completion pop up
+(setq corfu-auto-prefix 1)                        ;; how many characters I type in a row before suggestion of completion starts
+(define-key corfu-map (kbd "TAB") #'corfu-complete) ;; Tab to accept suggestion
+(global-corfu-mode)                               ;; enable Corfu everywhere
+
+(require 'orderless)
+(setq completion-styles '(orderless basic))       ;; tells Emacs which styles to use when matching input
+
+(require 'eglot)
+(add-hook 'python-mode-hook #'eglot-ensure)       ;; Runs in a file with the major mode python-mode (i.e. a .py file)
+(add-hook 'js-mode-hook #'eglot-ensure)           ;; .js file
 (add-hook 'text-mode-hook #'flyspell-mode)        ;; Spellcheck for Emacs
+
+(require 'embark)                               
+(require 'embark-consult)
+(global-set-key (kbd "C-.") #'embark-act)         ;; If I'm in a completion menu, what can I do with this selected file
+
+(require 'marginalia)
+(marginalia-mode 1)
+
+(use-package treemacs
+  :ensure t
+  :defer t
+  :bind
+  (("C-c t" . treemacs)                           ;; open & close Treemacs
+  ("C-c s" . treemacs-select-directory)))         ;; change directory
+
+(use-package treemacs-evil                        ;; allow Evil bindings in Treemacs
+  :ensure t
+  :after (treemacs evil))
+
+(with-eval-after-load 'treemacs
+   (define-key treemacs-mode-map (kbd "o") #'treemacs-visit-node-horizontal-split) ;; open file
+   (define-key treemacs-mode-map (kbd "q") #'treemacs-quit)) ;; quit Treemacs#+end_src
+
+(load-theme 'dracula t)                             ;; theme type
+
+(set-face-attribute 'font-lock-comment-face nil     ;; comments were too feint, changed colour
+                  :foreground "#56B6C2"  
+                  :slant 'italic)
+
+(set-face-attribute 'org-level-1 nil
+		    :height 1.25)
+
+(set-frame-font "JetBrainsMono Nerd Font-14" nil t) ;; font type & size
 
 ;; can't boot in the symbols without this
 (require 'nerd-icons)
@@ -149,6 +189,27 @@
 (with-eval-after-load 'evil
   (define-key evil-normal-state-map (kbd "C-d") #'evil-scroll-down)
   (define-key evil-normal-state-map (kbd "C-u") #'evil-scroll-up))
+
+;; personal function to count all numbered (i.e. list) lines -> use for question list file (M-x count-org-questions)
+(defun count-org-questions ()
+"Count numbered questions in the current Org buffer."
+    (interactive)
+    (let ((count 0))                              ;; create the variable count, let means it only exists inside this function
+    (save-excursion                               ;; when this function searches, it will jump the cursor around, when its done, return the cursor to its position before this function ran
+        (goto-char (point-min))                   ;; move to the start of the org file (i.e. start searching from the beginning)
+        (while (re-search-forward "^[[:space:]]*[0-9]+\\. " nil t) ;; search repeatedly until the file ends, using regex to find a number followed by a period
+        (setq count (1+ count))))                 ;; when a number is found add 1 to count
+    (message "Number of questions: %d" (/ count 2)))) ;; print this message & divide count by 2
+
+;; dired mode force g g & S-g shortcuts to work
+(with-eval-after-load 'dired
+(evil-define-key 'normal dired-mode-map
+      (kbd "gg") #'evil-goto-first-line
+      (kbd "G")  #'evil-goto-line))
+
+;; Use consult-line search function instead of evil one
+(with-eval-after-load 'evil
+  (define-key evil-normal-state-map (kbd "/") #'consult-line))
 
 ;; Emacs customize system created this
  ;; This means: Emacs package system is tracking what packages I've installed
